@@ -227,3 +227,38 @@ st.markdown("---")
 st.subheader(f"📋 Error Details ({total} errors)")
 
 if not df.empty:
+    display_cols = {
+        "area": "Area",
+        "jurisdiction": "Jurisdiction",
+        "banding": "Banding",
+        "title": "Monitor Title",
+        "error_type": "Error Type",
+        "explanation": "Plain English Explanation",
+        "fixable_label": "Fixability",
+        "snippet": "Snippet",
+        "freq": "Check Frequency",
+        "last_checked": "Last Checked",
+        "monitor_status": "Monitor Status",
+    }
+
+    df_display = df.rename(columns=display_cols)[list(display_cols.values())]
+
+    st.dataframe(
+        df_display,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Banding": st.column_config.TextColumn(width="small"),
+            "Plain English Explanation": st.column_config.TextColumn(width="large"),
+            "Snippet": st.column_config.TextColumn(width="medium"),
+        }
+    )
+
+    # Download button
+    csv = df_display.to_csv(index=False)
+    st.download_button(
+        label="⬇️ Download as CSV",
+        data=csv,
+        file_name=f"compliance_errors_{datetime.utcnow().strftime('%Y%m%d_%H%M')}.csv",
+        mime="text/csv",
+    )
