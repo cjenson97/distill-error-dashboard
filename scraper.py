@@ -1,9 +1,14 @@
 import asyncio
 import re
+import subprocess
+import sys
 from datetime import datetime
 from playwright.async_api import async_playwright
 import json
 import streamlit as st
+
+# Install Playwright Chromium browser on startup (required on Streamlit Cloud)
+subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=False)
 
 WATCHLISTS = {
     "Financial Services": "https://monitor.distill.io/#/w/8a348b54-3cd7-4c25-bd77-6a428257a05d/list/error/",
